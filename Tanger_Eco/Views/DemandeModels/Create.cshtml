@@ -1,0 +1,74 @@
+﻿@model TangerEco.Models.DemandeModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>DemandeModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group">
+                <label for="SelectedPersonnelType" class="control-label">Choisir le type de personnel</label>
+                <select id="SelectedPersonnelType" name="SelectedPersonnelType" class="form-control">
+                        <option value="Ministre">Personnel du Ministère</option>
+                        <option value="Universite">Personnel de l'Université</option>
+                    </select>
+            </div>
+
+            <div class="form-group" id="ministreFields">
+                <label for="personnelMinistreModelId" class="control-label">Personnel du Ministère</label>
+                <select asp-for="PersonnelMinistreId" class="form-control" asp-items="ViewBag.PersonnelMinistreId">
+                    <option value="">Sélectionnez</option>
+                </select>
+            </div>
+
+
+            <div class="form-group" id="universiteFields" style="display:none;">
+                <label for="personnelUniversiteModelId" class="control-label">Personnel de l'Université</label>
+                <select asp-for="PersonnelUniversiteId" class="form-control" asp-items="ViewBag.PersonnelUniversiteId">
+                    <option value="">Sélectionnez</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(function () {
+            $('#SelectedPersonnelType').change(function () {
+                if ($(this).val() == 'Ministre') {
+                    $('#ministreFields').show();
+                    $('#universiteFields').hide();
+                } else {
+                    $('#ministreFields').hide();
+                    $('#universiteFields').show();
+                }
+            });
+        });
+    </script>
+}

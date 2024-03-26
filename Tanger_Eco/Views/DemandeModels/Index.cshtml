@@ -1,0 +1,94 @@
+﻿@model IEnumerable<TangerEco.Models.DemandeModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+@if (!(User.IsInRole("PMini") || User.IsInRole("PUniv")))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Statut)
+            </th>
+            @if (!User.IsInRole("DataCollector"))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.DataCollector)
+                </th>
+            }
+            @if (!(User.IsInRole("PMini") || User.IsInRole("PUniv")))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.PersonnelMinistre)
+                </th>
+            }
+            @if (!(User.IsInRole("PMini") || User.IsInRole("PUniv")))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.PersonnelUniversite)
+                </th>
+            }
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Statut)
+            </td>
+            @if (!User.IsInRole("DataCollector"))
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataCollector.Name)
+                </td>
+            }
+            @if (!(User.IsInRole("PMini") || User.IsInRole("PUniv")))
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.PersonnelMinistre.Name)
+                </td>
+            }
+            @if (!(User.IsInRole("PMini") || User.IsInRole("PUniv")))
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.PersonnelUniversite.Name)
+                </td>
+            }
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.DemandeModelId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.DemandeModelId">Details</a> |
+                @if (!(User.IsInRole("PMini") || User.IsInRole("PUniv")))
+                {
+                    <a asp-action="Delete" asp-route-id="@item.DemandeModelId">Delete</a>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

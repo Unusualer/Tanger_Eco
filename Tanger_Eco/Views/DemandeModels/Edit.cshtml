@@ -1,0 +1,127 @@
+﻿@model TangerEco.Models.DemandeModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>DemandeModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="DemandeModelId" />
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                @if (User.IsInRole("DataCollector"))
+                {
+                    <input asp-for="Title" class="form-control"/>
+                }
+                else{
+                    <input asp-for="Title" class="form-control" readonly/>
+                }
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                @if (User.IsInRole("DataCollector"))
+                {
+                    <input asp-for="Description" class="form-control" />
+                }
+                else
+                {
+                    <input asp-for="Description" class="form-control" readonly/>
+                }
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Statut" class="control-label"></label>
+                @if(User.IsInRole("PMini")|| User.IsInRole("PUniv"))
+                {
+                    <select asp-for="Statut" asp-items="@((SelectList)ViewData["Statuts"])" class="form-control"></select>
+                }
+                else
+                {
+                    <input type="text" id="statut" name="statut" class="form-control" value="@ViewBag.CurrentStatut" readonly>  
+                }
+                <span asp-validation-for="Statut" class="text-danger"></span>
+            </div>
+            @if (User.IsInRole("DataCollector"))
+            {
+                <div class="form-group">
+                    <label for="SelectedPersonnelType" class="control-label">Choisir le type de personnel</label>
+                    <select id="SelectedPersonnelType" name="SelectedPersonnelType" class="form-control">
+                        @if (Model.PersonnelMinistreId != null)
+                        {
+                            <option value="Ministre" selected>Personnel du Ministère</option>
+                            <option value="Universite">Personnel de l'Université</option>
+
+                        }
+                        else if (Model.PersonnelUniversiteId != null)
+                        {
+                            <option value="Ministre">Personnel du Ministère</option>
+                            <option value="Universite" selected>Personnel de l'Université</option>
+
+                        }
+                    </select>
+                </div>
+                @if(Model.PersonnelMinistreId != null)
+                {
+                    <div class="form-group" id="ministreFields">
+                        <label for="personnelMinistreId" class="control-label">Personnel du Ministère</label>
+                        <select asp-for="PersonnelMinistreId" class="form-control" asp-items="ViewBag.PersonnelMinistreId">
+                            <option value="">Sélectionnez</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="universiteFields" style="display:none;">
+                        <label for="personnelUniversiteId" class="control-label">Personnel de l'Université</label>
+                        <select asp-for="PersonnelUniversiteId" class="form-control" asp-items="ViewBag.PersonnelUniversiteId">
+                            <option value="">Sélectionnez</option>
+                        </select>
+                    </div>
+                }
+                else if(Model.PersonnelUniversiteId != null)
+                {
+                    <div class="form-group" id="ministreFields" style="display:none;">
+                        <label for="personnelMinistreId" class="control-label">Personnel du Ministère</label>
+                        <select asp-for="PersonnelMinistreId" class="form-control" asp-items="ViewBag.PersonnelMinistreId">
+                            <option value="">Sélectionnez</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="universiteFields">
+                        <label for="personnelUniversiteId" class="control-label">Personnel de l'Université</label>
+                        <select asp-for="PersonnelUniversiteId" class="form-control" asp-items="ViewBag.PersonnelUniversiteId">
+                            <option value="">Sélectionnez</option>
+                        </select>
+                    </div>
+                }
+            }
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(function () {
+            $('#SelectedPersonnelType').change(function () {
+                if ($(this).val() == 'Ministre') {
+                    $('#ministreFields').show();
+                    $('#universiteFields').hide();
+                } else {
+                    $('#ministreFields').hide();
+                    $('#universiteFields').show();
+                }
+            });
+        });
+    </script>
+}

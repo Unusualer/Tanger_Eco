@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                UserName
+            </th>
+            <th>
+                Ministry
+            </th>
+            <th>
+                Role
+            </th>
+            <th>X</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pMini in Model)
+        {
+            <tr>
+                <td>
+                    @pMini.Name
+                </td>
+                <td>
+                    @pMini.UserName
+                </td>
+                <td>
+                    @pMini.Ministry
+                </td>
+                <td>
+                    @pMini.Role
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
